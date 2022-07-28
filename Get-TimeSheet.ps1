@@ -30,7 +30,6 @@ function Get-TimeSheet {
         try {
             $gciParams = @{
                 Path        = $Directory
-                Recurse     = $true
                 Filter      = "*$($dateFormatted)*"
                 ErrorAction = 'Stop'
             }
