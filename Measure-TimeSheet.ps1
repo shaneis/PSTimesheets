@@ -32,7 +32,7 @@ function Measure-TimeSheet {
         ForEach-Object -Process {
             $durationSecs = ($_.Group.Duration |
                 Measure-Object -Property TotalSeconds -Sum).Sum
-            
+
             $durationAggSecs = ($_.Group.DurationToNearest15 |
                 Measure-Object -Property TotalSeconds -Sum).Sum
 
