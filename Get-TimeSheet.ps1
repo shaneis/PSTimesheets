@@ -45,11 +45,19 @@ function Get-TimeSheet {
             foreach ($content in Get-Content -Path $timeSheet) {
                 if ([string]::IsNullOrEmpty($content)) { continue }
 
-                $fields = $content.Split(' - ', 3)
+                $Date, $Action, $Subject = $content.Split(' - ', 3)
+
+                # Deal with `-as [datetime]` not working properly...
+                $Date = [datetime]::ParseExact(
+                    $Date,
+                    'HH:mm dd/MM/yyyy',
+                    $null
+                )
+                
                 [PSCustomObject]@{
-                    Date    = $fields[0] -as [datetime]
-                    Action  = $fields[1].Trim()
-                    Subject = $fields[2]
+                    Date    = $Date -as [datetime]
+                    Action  = $Action
+                    Subject = $Subject
                 }
             }
         }
