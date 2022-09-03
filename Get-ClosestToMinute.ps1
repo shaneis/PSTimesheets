@@ -1,52 +1,76 @@
 function Get-ClosestToMinute {
-    [CmdletBinding()]
+    <#
+    .synopsis
+    Returns an object with a timespan that is rounded to the nearest x minute.
+    
+    .description
+    Returns an object with a timespan that is rounded to the nearest x minute,
+    specified by the -minute parameter, and rounding up or down depending on
+    the value passed to the -boundary parameter.
+    
+    .example
+    PS C:\> Get-ClosestToMinute -timespan '00:12'
+
+    initialtimespan nearestminute boundary newtimespan
+    --------------- ------------- -------- -----------
+           00:12:00            15        5    00:15:00
+
+    .EXAMPLE
+    PS C:\> Get-ClosestToMinute -timespan 01:12 -minute 30 -boundary 20
+    
+    initialtimespan nearestminute boundary newtimespan
+    --------------- ------------- -------- -----------
+           01:12:00            30       20    01:00:00
+
+    #>
+    [cmdletbinding()]
 
     param (
-        # Starting timespan to be rounded to the nearest X minute
-        [Parameter(
-            Mandatory,
-            ValueFromPipeline,
-            ValueFromPipelineByPropertyName
+        # starting timespan to be rounded to the nearest x minute
+        [parameter(
+            mandatory,
+            valuefrompipeline,
+            valuefrompipelinebypropertyname
         )]
-        [Alias('InitialTimeSpan', 'ts')]
-        [timespan] $TimeSpan,
+        [alias('initialtimespan', 'ts')]
+        [timespan] $timespan,
 
-        # The minute to round the timespan to
-        [Parameter(ValueFromPipeline)]
-        [Alias('NearestMinute')]
-        [int] $Minute = 15,
+        # the minute to round the timespan to
+        [parameter(valuefrompipeline)]
+        [alias('nearestminute')]
+        [int] $minute = 15,
 
-        # If we're outside the boundary, we aim to go to the next/prev $Minute
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [ValidateNotNullOrEmpty()]
-        [ValidateScript({ $_ -ge 0 -and $_ -le $Minute })]
-        [Alias('IncreaseBoundary')]
-        [int] $Boundary = 5
+        # if we're outside the boundary, we aim to go to the next/prev $minute
+        [parameter(valuefrompipelinebypropertyname)]
+        [validatenotnullorempty()]
+        [validatescript({ $_ -ge 0 -and $_ -le $minute })]
+        [alias('increaseboundary')]
+        [int] $boundary = 5
     )
 
     process {
-        $newTS = $TimeSpan
-        $minuteMod = $TimeSpan.Minutes % $Minute
-        $tsMod = New-TimeSpan -Minutes $minuteMod
-        $tsIncrease = New-TimeSpan -Minutes ($Minute - $minuteMod)
-        $halfNearestMinute = $Minute / 2
+        $newts = $timespan
+        $minutemod = $timespan.minutes % $minute
+        $tsmod = new-timespan -minutes $minutemod
+        $tsincrease = new-timespan -minutes ($minute - $minutemod)
+        $halfnearestminute = $minute / 2
 
-        Write-PSFMessage -Level Verbose -Message "Calculating new timespan for $newTS"
-        $newTS = if ($minuteMod -gt $Boundary -and $newTS.TotalMinutes -ge $Boundary) {
-            $newTS.Add($tsIncrease)
+        write-psfmessage -level verbose -message "calculating new timespan for $newts"
+        $newts = if ($minutemod -gt $boundary -and $newts.totalminutes -ge $boundary) {
+            $newts.add($tsincrease)
         }
-        elseif ($minuteMod -le $halfNearestMinute -and $newTS.TotalMinutes -ge $halfNearestMinute) {
-            $newTS.Subtract($tsMod)
+        elseif ($minutemod -le $halfnearestminute -and $newts.totalminutes -ge $halfnearestminute) {
+            $newts.subtract($tsmod)
         }
         else {
-            $newTS.Add($tsIncrease)
+            $newts.add($tsincrease)
         }
 
-        [PSCustomObject]@{
-            InitialTimespan = $TimeSpan
-            NearestMinute   = $Minute
-            Boundary        = $Boundary
-            NewTimespan     = $newTS
+        [pscustomobject]@{
+            initialtimespan = $timespan
+            nearestminute   = $minute
+            boundary        = $boundary
+            newtimespan     = $newts
         }
     }
 }
