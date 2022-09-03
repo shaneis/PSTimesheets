@@ -55,14 +55,14 @@ function Get-TimeSheetTotalPerDay {
 
                 if (-not $TimeSheet) { continue }
 
-                $DaysTotal.Add(($TimeSheet | Measure-TimeSheet)) 
+                $DaysTotal.Add(($TimeSheet | Measure-TimeSheet))
                 $TimeSheet = $null
             }
         }
 
         if ($PSCmdlet.ParameterSetName -eq 'ByDate') {
             Write-PSFMessage -Message "Gathering timesheet by date" -Level Verbose
-            
+
             try {
                 $TimeSheet = Get-TimeSheet -FileDate $Date
             } catch {
@@ -75,7 +75,7 @@ function Get-TimeSheetTotalPerDay {
         foreach ($Total in $DaysTotal.GetEnumerator()) {
             $MeasuredSeconds = ($Total.TotalDuration.TotalSeconds | Measure-Object -Sum).Sum
             $TotalSeconds    = New-TimeSpan -Seconds $MeasuredSeconds
-        
+
             $MeasuredAggdSeconds = ($Total.TotalDuration15Mins.TotalSeconds | Measure-Object -Sum).Sum
             $TotalAggSeconds     = New-TimeSpan -Seconds $MeasuredAggdSeconds
 
