@@ -53,7 +53,7 @@ function Get-TimeSheet {
                     'HH:mm dd/MM/yyyy',
                     $null
                 )
-                
+
                 [PSCustomObject]@{
                     Date    = $Date -as [datetime]
                     Action  = $Action
