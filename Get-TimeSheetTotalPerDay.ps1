@@ -1,8 +1,29 @@
 function Get-TimeSheetTotalPerDay {
+    <#
+    .SYNOPSIS
+        Returns total aggregated data for TimeSheets.
+    .DESCRIPTION
+        Parses passed in dates or days, aggregates the timesheet files found
+        and returns the data.
+    .EXAMPLE
+        PS C:\> Get-TimeSheetTotalPerDay -Directory $HOME | Format-Table
+
+        Subject               SubjectDuration SubjectDurationAgg Date                Duration DurationAgg
+        -------               --------------- ------------------ ----                -------- -----------
+        Call with PM: Issue   00:45:00        00:45:00           28/07/2022 00:00:00 05:18:00 05:45:00
+        Coffee Break          00:49:00        00:45:00           28/07/2022 00:00:00 05:18:00 05:45:00
+        Daily Checks          01:08:00        01:15:00           28/07/2022 00:00:00 05:18:00 05:45:00
+        Daily Standup         00:53:00        01:00:00           28/07/2022 00:00:00 05:18:00 05:45:00
+        Dedicated Code Review 00:15:00        00:15:00           28/07/2022 00:00:00 05:18:00 05:45:00
+        Prep for Upgrade      00:24:00        00:30:00           28/07/2022 00:00:00 05:18:00 05:45:00
+        Review Upgrade plan   00:28:00        00:30:00           28/07/2022 00:00:00 05:18:00 05:45:00
+        Update Meeting        00:36:00        00:45:00           28/07/2022 00:00:00 05:18:00 05:45:00
+    #>
     [CmdletBinding(DefaultParameterSetName = 'ByDays')]
     [OutputType('TimeSheetTotalPerDay')]
 
     param (
+        # How many days back in the timesheets we want to parse.
         [Parameter(
             Position = 0,
             ValueFromPipelineByPropertyName,
@@ -12,6 +33,7 @@ function Get-TimeSheetTotalPerDay {
         [ValidateNotNullOrEmpty()]
         [int] $DaysBack = 0,
 
+        # Parse a timesheet of a particular date.
         [Parameter(
             Position = 0,
             ValueFromPipelineByPropertyName,
