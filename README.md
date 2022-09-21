@@ -62,7 +62,7 @@ Getting the timesheets uses `Get-TimeSheet`:
     
 Measuring the timesheets defaults to 15 minute boundaries, using `Measure-TimeSheet`:
 
-    PS C:\> Get-TimeSheet_AVCompliant -Directory $HOME | Measure-TimeSheet
+    PS C:\> Get-TimeSheet -Directory $HOME | Measure-TimeSheet
     
     Subject               Date                TotalDuration TotalDuration15Mins
     -------               ----                ------------- -------------------

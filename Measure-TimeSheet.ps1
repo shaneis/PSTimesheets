@@ -1,4 +1,28 @@
 function Measure-TimeSheet {
+    <#
+    .SYNOPSIS
+        Measures the timesheets and returns aggregate information.
+
+    .DESCRIPTION
+        Measures the timesheets passed in and returns aggregate information,
+        i.e. Subject, Date, Total time taken, and Total time taken in 15 min
+        increments.
+
+    .EXAMPLE
+    PS C:\> Get-TimeSheet -Directory $HOME | Measure-TimeSheet
+
+    Subject               Date                TotalDuration TotalDuration15Mins
+    -------               ----                ------------- -------------------
+    Call with PM: Issue   28/07/2022 00:00:00 00:45:00      00:45:00
+    Coffee Break          28/07/2022 00:00:00 00:49:00      00:45:00
+    Daily Checks          28/07/2022 00:00:00 01:08:00      01:15:00
+    Daily Standup         28/07/2022 00:00:00 00:53:00      01:00:00
+    Dedicated Code Review 28/07/2022 00:00:00 00:15:00      00:15:00
+    Prep for Upgrade      28/07/2022 00:00:00 00:24:00      00:30:00
+    Review Upgrade plan   28/07/2022 00:00:00 00:28:00      00:30:00
+    Update Meeting        28/07/2022 00:00:00 00:36:00      00:45:00
+    #>
+    
     [CmdletBinding()]
 
     param (
