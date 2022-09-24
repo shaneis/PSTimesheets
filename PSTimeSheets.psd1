@@ -30,7 +30,7 @@ CompanyName = 'Unknown'
 Copyright = "(c) Shane O'Neill. All rights reserved."
 
 # Description of the functionality provided by this module
-# Description = ''
+# Description = 'Read, parse, and aggregate timesheet files'
 
 # Minimum version of the PowerShell engine required by this module
 # PowerShellVersion = ''
