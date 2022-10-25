@@ -12,7 +12,7 @@
 RootModule = 'PSTimeSheets.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.1'
+ModuleVersion = '0.1.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -103,7 +103,7 @@ PrivateData = @{
         Tags = @("TimeSheet", "TimeSheets")
 
         # A URL to the license for this module.
-        # LicenseUri = ''
+        LicenseUri = 'https://github.com/shaneis/PSTimesheets/blob/main/LICENSE'
 
         # A URL to the main website for this project.
         ProjectUri = 'https://github.com/shaneis/PSTimesheets'
